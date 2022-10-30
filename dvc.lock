@@ -1,0 +1,104 @@
+schema: '2.0'
+stages:
+  data_download:
+    cmd: python src/stages/data_download.py --config=params.yaml
+    deps:
+    - path: src/stages/data_download.py
+      md5: 301ad747f7bad3f8443472b4058de0d6
+      size: 800
+    params:
+      params.yaml:
+        download:
+          output_file: /home/cedric/Courses/course-ds-base/data/raw/iris.csv
+    outs:
+    - path: data/raw/iris.csv
+      md5: 2417cf4565ae9cdc40d0b15b5a3720da
+      size: 3248
+  featurize:
+    cmd: python src/stages/featurize.py --config=params.yaml
+    deps:
+    - path: data/raw/iris.csv
+      md5: 2417cf4565ae9cdc40d0b15b5a3720da
+      size: 3248
+    - path: src/stages/featurize.py
+      md5: 53ad819732cff0d5609b3c65ea9b96ea
+      size: 737
+    params:
+      params.yaml:
+        featurize:
+          input_file: /home/cedric/Courses/course-ds-base/data/raw/iris.csv
+          output_file: /home/cedric/Courses/course-ds-base/data/featurized/iris_features.csv
+    outs:
+    - path: data/featurized/iris_features.csv
+      md5: a9228c50cfbda083f413c5e69115d7f2
+      size: 7761
+  split:
+    cmd: python src/stages/data_split.py --config=params.yaml
+    deps:
+    - path: data/featurized/iris_features.csv
+      md5: a9228c50cfbda083f413c5e69115d7f2
+      size: 7761
+    - path: src/stages/data_split.py
+      md5: 96b462812498b9df3026fca8ec60e96d
+      size: 959
+    params:
+      params.yaml:
+        split:
+          input_file: /home/cedric/Courses/course-ds-base/data/featurized/iris_features.csv
+          output_file_test_data: /home/cedric/Courses/course-ds-base/data/split/test.csv
+          output_file_train_data: /home/cedric/Courses/course-ds-base/data/split/train.csv
+          random_state: 42
+          test_size: 0.2
+    outs:
+    - path: data/split/test.csv
+      md5: 0c3ad3615245a54f7280e2799640e3a1
+      size: 1603
+    - path: data/split/train.csv
+      md5: f2841097160bfba5f91ca51fce0f89a8
+      size: 6125
+  train:
+    cmd: python src/stages/train.py --config=params.yaml
+    deps:
+    - path: data/split/train.csv
+      md5: f2841097160bfba5f91ca51fce0f89a8
+      size: 6125
+    - path: src/stages/train.py
+      md5: 67067a72805a2e5e523e8c72fa5ded9c
+      size: 806
+    params:
+      params.yaml:
+        train:
+          input_file: /home/cedric/Courses/course-ds-base/data/split/train.csv
+          model_file: /home/cedric/Courses/course-ds-base/models/model.joblib
+          model_name: logreg
+          model_param:
+            C: 0.001
+            max_iter: 100
+            multi_class: multinomial
+            solver: lbfgs
+    outs:
+    - path: models/model.joblib
+      md5: 52251b120c2fc1caf5b97e6d5f3161b8
+      size: 934
+  evaluate:
+    cmd: python src/stages/evaluate.py --config=params.yaml
+    deps:
+    - path: data/split/test.csv
+      md5: 0c3ad3615245a54f7280e2799640e3a1
+      size: 1603
+    - path: models/model.joblib
+      md5: 52251b120c2fc1caf5b97e6d5f3161b8
+      size: 934
+    - path: src/stages/evaluate.py
+      md5: 1ce97a48417b704f8abea2c02a350b62
+      size: 3897
+    params:
+      params.yaml:
+        evaluate:
+          confusion_matrix_png: /home/cedric/Courses/course-ds-base/reports/confusion_matrix.png
+          input_file: /home/cedric/Courses/course-ds-base/data/split/test.csv
+          model_file: /home/cedric/Courses/course-ds-base/models/model.joblib
+    outs:
+    - path: reports/confusion_matrix.png
+      md5: ee29b26d8159ccc8ab2ad240e4ef3e70
+      size: 13637
