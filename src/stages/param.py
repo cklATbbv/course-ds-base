@@ -1,4 +1,3 @@
-from turtle import home
 import yaml
 import os.path as path
 
@@ -64,3 +63,17 @@ parameters = {
     }
 
 }
+
+download_params = {
+    "output_file": parameters["download2featurize"]['raw_data_path']
+}
+
+yaml.dump(download_params, open(path.join(homefolder,"config", "param_download.yml"),"w"))
+
+
+featurize_params = {
+    "input_file": parameters["download2featurize"]['raw_data_path'],
+    "output_file": parameters["featurize2split"]['featurized_data_path']
+}
+
+yaml.dump(featurize_params, open(path.join(homefolder,"config", "param_featurize.yml"),"w"))
