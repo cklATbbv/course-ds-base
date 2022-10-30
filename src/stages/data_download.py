@@ -12,14 +12,10 @@ def data_download(config_path: Text):
     # Get data     
     data = load_iris(as_frame=True)
     dataset = data.frame
-    
+
     # feature names
     dataset.columns = [colname.strip(' (cm)').replace(' ', '_') for colname in dataset.columns.tolist()]
     dataset.to_csv(config['download']['output_file'])
-    
-    print("Data download is complete.")
-    
-    
     
 if __name__ == '__main__':
     
