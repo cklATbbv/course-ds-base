@@ -9,16 +9,16 @@ def data_split(config_path):
     with open(config_path) as fid:
         config = yaml.safe_load(fid)
 
-    test_size=config['test_size']
-    random_state=config['random_state']
+    test_size=config['split']['test_size']
+    random_state=config['split']['random_state']
     
-    dataset = pd.read_csv(config['input_file'])
+    dataset = pd.read_csv(config['split']['input_file'])
     train_dataset, test_dataset = train_test_split(dataset, 
                                                    test_size=test_size,
                                                    random_state=random_state)
 
-    train_dataset.to_csv(config["output_file_train_data"], index=False)
-    test_dataset.to_csv(config["output_file_test_data"], index=False)
+    train_dataset.to_csv(config['split']["output_file_train_data"], index=False)
+    test_dataset.to_csv(config['split']["output_file_test_data"], index=False)
 
 
 if __name__ == '__main__':

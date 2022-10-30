@@ -15,7 +15,7 @@ def data_download(config_path: Text):
     
     # feature names
     dataset.columns = [colname.strip(' (cm)').replace(' ', '_') for colname in dataset.columns.tolist()]
-    dataset.to_csv(config['output_file'])
+    dataset.to_csv(config['download']['output_file'])
     
     print("Data download is complete.")
     

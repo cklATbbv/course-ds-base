@@ -9,15 +9,15 @@ def train(config_path):
         config = yaml.safe_load(fid)
 
     
-    train_dataset = pd.read_csv(config["input_file"])
+    train_dataset = pd.read_csv(config['train']["input_file"])
 
     y_train = train_dataset.loc[:, 'target'].values.astype('int32')
     X_train = train_dataset.drop('target', axis=1).values.astype('float32')
 
-    logreg = LogisticRegression(**config['model_param'])
+    logreg = LogisticRegression(**config['train']['model_param'])
     logreg.fit(X_train, y_train)
 
-    joblib.dump(logreg, config['model_file'])
+    joblib.dump(logreg, config['train']['model_file'])
 
 
 

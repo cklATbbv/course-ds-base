@@ -104,3 +104,17 @@ evaluate_params = {
 }
 
 yaml.dump(evaluate_params, open(path.join(homefolder,"config", "param_evaluate.yml"),"w"))
+
+
+
+parameter_file = {
+
+    "download": download_params,
+    "featurize": featurize_params,
+    "split": split_params,
+    "train": train_params,
+    "evaluate": evaluate_params
+
+}
+
+yaml.dump(parameter_file, open(path.join(homefolder,"params.yaml"),"w"))
