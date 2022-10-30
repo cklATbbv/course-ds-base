@@ -70,10 +70,37 @@ download_params = {
 
 yaml.dump(download_params, open(path.join(homefolder,"config", "param_download.yml"),"w"))
 
-
 featurize_params = {
     "input_file": parameters["download2featurize"]['raw_data_path'],
     "output_file": parameters["featurize2split"]['featurized_data_path']
 }
 
 yaml.dump(featurize_params, open(path.join(homefolder,"config", "param_featurize.yml"),"w"))
+
+split_params = {
+    "test_size": parameters["split"]["test_size"],
+    "random_state": parameters["split"]["random_state"],
+    "input_file": parameters["featurize2split"]["featurized_data_path"],
+    "output_file_train_data": parameters["split2train"]["train_data_path"],
+    "output_file_test_data": parameters["split2evaluate"]["test_data_path"]
+}
+
+yaml.dump(split_params, open(path.join(homefolder,"config", "param_split.yml"),"w"))
+
+
+train_params = {
+    "model_name": parameters["train"]["model_name"],
+    "model_param": parameters["train"]["model_params"],
+    "input_file": parameters["split2train"]["train_data_path"],
+    "model_file": parameters["train2evaluate"]["model_path"]
+}
+
+yaml.dump(train_params, open(path.join(homefolder,"config", "param_train.yml"),"w"))
+
+evaluate_params = {
+    "input_file": parameters["split2evaluate"]["test_data_path"],
+    "model_file": parameters["train2evaluate"]["model_path"],
+    "confusion_matrix_png": parameters["evaluate"]["confusion_matrix_png"]
+}
+
+yaml.dump(evaluate_params, open(path.join(homefolder,"config", "param_evaluate.yml"),"w"))
