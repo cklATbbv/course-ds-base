@@ -2,7 +2,7 @@ base:
   random_state: 42
 
 data_process:
-  in_path: 'data/raw/iris.csv'
+  raw_data_path: 'data/raw/iris.csv'
   out_path: 'data/iris_engineered.csv'
   
 data_split:
